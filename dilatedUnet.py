@@ -21,7 +21,6 @@ from keras.optimizers import RMSprop
 from keras.losses import binary_crossentropy
 from clr_callback import *
 import cv2
-import tifffile as tiff
 
 def r_square(y_true, y_pred):
     # SSR = K.mean(K.square(y_pred-K.mean(y_true)),axis=-1)
@@ -57,21 +56,7 @@ class UNet():
         self.net = None
 
     def load_data(self,image_root, mask_root):
-        # imgs, msks = tiff.imread(image_path+'/train.tif'), tiff.imread(mask_path+'/label.tif') / 255
-        #
-        #
-        #
-        # montage_imgs = np.empty((nb_rows * imgs.shape[1], nb_cols * imgs.shape[2]), dtype=np.float32)
-        # montage_msks = np.empty((nb_rows * imgs.shape[1], nb_cols * imgs.shape[2]), dtype=np.int8)
-        # idxs = np.arange(imgs.shape[0])
-        # np.random.shuffle(idxs)
-        # idxs = iter(idxs)
-        # for y0 in range(0, montage_imgs.shape[0], imgs.shape[1]):
-        #     for x0 in range(0, montage_imgs.shape[1], imgs.shape[2]):
-        #         y1, x1 = y0 + imgs.shape[1], x0 + imgs.shape[2]
-        #         idx = next(idxs)
-        #         montage_imgs[y0:y1, x0:x1] = imgs[idx]
-        #         montage_msks[y0:y1, x0:x1] = msks[idx]
+
         image_names = os.listdir(image_root)
         montage_imgs = []
         montage_msks = []
@@ -226,18 +211,12 @@ class UNet():
 
         while True:
 
-            # img_batch = np.zeros((batch_size,) + (512,512), dtype=imgs.dtype)
-            # msk_batch = np.zeros((batch_size,) + (512,512), dtype=msks.dtype)
+
             img_batch = []
             msk_batch = []
 
             for batch_idx in range(batch_size):
-                # Sample a random window.
-                # y0, x0 = np.random.randint(0, H - wdw_H), np.random.randint(0, W - wdw_W)
-                # y1, x1 = y0 + wdw_H, x0 + wdw_W
-                #
-                # img_batch[batch_idx] = imgs[y0:y1, x0:x1]
-                # msk_batch[batch_idx] = msks[y0:y1, x0:x1]
+
                 a = np.random.randint(0, len(msks))
                 img_batch.append(imgs[a])
                 gray_img = msks[a].astype(np.float32)
